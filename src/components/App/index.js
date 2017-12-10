@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import './styles.scss';
+import './styles.css';
 import AppRouter from '../AppRouter';
+import createStore from '../../store';
+
+const store = createStore();
 
 export class App extends Component {
   render() {
     return (
-      <div className="app">
-        <AppRouter />
-      </div>
+      <BrowserRouter>
+        <Provider store={store}>
+          <div className="app">
+            <AppRouter />
+          </div>
+        </Provider>
+      </BrowserRouter>
     );
   }
 }
