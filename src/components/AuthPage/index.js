@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { Particles } from 'react-particles-js';
+import { connect } from 'react-redux';
 
 import './styles.css';
 import particlesParams from '../../particles-params';
 import logo from '../../assets/Logo.svg';
 import iconUser from '../../assets/login/user-shape.svg';
 import iconPadlock from '../../assets/login/padlock-unlock.svg';
+import { loginRequest, registrationRequest } from '../../actions/auth';
 
 export class AuthPage extends Component {
   state = {
     email: '',
-    pass: '',
-    isRegister: false
+    password: '',
+    isRegistration: false
   };
 
   changeHandler = e => {
@@ -26,12 +28,23 @@ export class AuthPage extends Component {
     e.preventDefault();
 
     this.setState({
-      isRegister: !this.state.isRegister
+      isRegistration: !this.state.isRegistration
     });
   };
 
+  submitHandler = () => {
+    const { isRegistration, email, password } = this.state;
+    const { loginRequest, registrationRequest } = this.props;
+
+    if (isRegistration) {
+      registrationRequest({ email, password });
+    } else {
+      loginRequest({ email, password });
+    }
+  };
+
   render() {
-    const { email, pass, isRegister } = this.state;
+    const { email, password, isRegistration } = this.state;
 
     return <div className="auth">
       <Particles className="particles" params={particlesParams} />
@@ -55,18 +68,18 @@ export class AuthPage extends Component {
               type="password"
               className="field"
               placeholder="password"
-              name="pass"
-              value={pass}
+              name="password"
+              value={password}
               onChange={this.changeHandler}
             />
           </div>
-          <button className="btn">
-            {isRegister ? 'Регистрация' : 'Войти'}
+          <button className="btn" onClick={this.submitHandler}>
+            {isRegistration ? 'Регистрация' : 'Войти'}
           </button>
         </div>
         <div className="block center">
           {
-            isRegister ?
+            isRegistration ?
               <div>Уже зарегистрированы? <a href="" onClick={this.changeMode}>Войти</a></div> :
               <div>Впервые на сайте? <a href="" onClick={this.changeMode}>Регистрация</a></div>
           }
@@ -76,4 +89,8 @@ export class AuthPage extends Component {
   }
 }
 
-export default AuthPage;
+const mapDispatchToProps = {
+  loginRequest, registrationRequest
+};
+
+export default connect(null, mapDispatchToProps)(AuthPage);

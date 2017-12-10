@@ -1,27 +1,66 @@
 import { handleActions } from 'redux-actions';
 
-import { authorize, logout } from '../actions/auth';
+import {
+  loginRequest,
+  loginReject,
+  loginSuccess,
+  registrationRequest,
+  registrationReject,
+  logout
+} from '../actions/auth';
 
 const initialState = {
+  isFetching: false,
+  isFetched: false,
   token: null,
-  authorized: false,
   error: null
 };
 
 export default handleActions(
   {
-    [authorize]: (state, action) => ({
+    [loginRequest]: (state, action) => ({
       ...state,
-      authorize: true,
+      isFetching: true,
+      isFetched: false,
+      error: null,
+      token: null
+    }),
+    [loginSuccess]: (state, action) => ({
+      ...state,
+      isFetching: false,
+      isFetched: true,
       error: null,
       token: action.payload
     }),
+    [loginReject]: (state, action) => ({
+      ...state,
+      isFetching: false,
+      isFetched: true,
+      error: action.payload,
+      token: null
+    }),
+    [registrationRequest]: (state, action) => ({
+      ...state,
+      isFetching: true,
+      isFetched: false,
+      error: null,
+      token: null
+    }),
+    [registrationReject]: (state, action) => ({
+      ...state,
+      isFetching: false,
+      isFetched: true,
+      error: action.payload,
+      token: null
+    }),
     [logout]: (state, action) => ({
       ...state,
-      authorize: false,
+      authorized: false,
       error: null,
       token: null
     })
   },
   initialState
 );
+
+export const getIsAuthorized = state => !!state.auth.token;
