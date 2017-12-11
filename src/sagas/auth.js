@@ -6,36 +6,60 @@ import {
   loginSuccess,
   registrationRequest,
   registrationReject,
+  logout
 } from '../actions/auth';
 import { getIsAuthorized } from '../reducers/auth';
-import * as api from '../api';
+import {
+  getTokenFromLocalStorage,
+  setTokenToLocalStorage,
+  removeTokenFromLocalStorage
+} from '../localStorage';
+import { login, registration, clearTokenApi, setTokenApi } from '../api';
 
 export default function* () {
   while (true) {
     const isAuthorized = yield select(getIsAuthorized);
+    const localStorageToken = yield call(getTokenFromLocalStorage);
+    let token;
 
     if (!isAuthorized) {
-      const action = yield take([loginRequest, registrationRequest]);
+      if (localStorageToken) {
+        token = localStorageToken;
 
-      if (action.type === loginRequest.toString()) {
-        // Login
-        try {
-          const response = yield call(api.login, action.payload);
+        yield put(loginSuccess(token));
+      } else {
+        const action = yield take([loginRequest, registrationRequest]);
 
-          yield put(loginSuccess(response.data.jwt));
-        } catch (error) {
-          yield put(loginReject(error));
-        }
-      } else if (action.type === registrationRequest.toString()) {
-        // Registration
-        try {
-          const response = yield call(api.registration, action.payload);
+        if (action.type === registrationRequest.toString()) {
+          // Registration
+          try {
+            const response = yield call(registration, action.payload);
+            token = response.data.jwt;
 
-          yield put(loginSuccess(response.data.jwt));
-        } catch (error) {
-          yield put(registrationReject(error));
+            yield put(loginSuccess(token));
+          } catch (error) {
+            yield put(registrationReject(error));
+          }
+        } else if (action.type === loginRequest.toString()) {
+          // Login
+          try {
+            const response = yield call(login, action.payload);
+            token = response.data.jwt;
+
+            yield put(loginSuccess(token));
+          } catch (error) {
+            yield put(loginReject(error));
+          }
         }
       }
+    }
+
+    if (token) {
+      yield call(setTokenApi, token);
+      yield call(setTokenToLocalStorage, token);
+      yield take(logout);
+      yield call(removeTokenFromLocalStorage);
+      yield call(clearTokenApi);
     }
   }
 }

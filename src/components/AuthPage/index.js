@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Particles } from 'react-particles-js';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'
 
 import './styles.css';
 import particlesParams from '../../particles-params';
@@ -8,6 +9,7 @@ import logo from '../../assets/Logo.svg';
 import iconUser from '../../assets/login/user-shape.svg';
 import iconPadlock from '../../assets/login/padlock-unlock.svg';
 import { loginRequest, registrationRequest } from '../../actions/auth';
+import { getError, getIsAuthorized } from '../../reducers/auth';
 
 export class AuthPage extends Component {
   state = {
@@ -32,7 +34,9 @@ export class AuthPage extends Component {
     });
   };
 
-  submitHandler = () => {
+  submitHandler = e => {
+    e.preventDefault();
+
     const { isRegistration, email, password } = this.state;
     const { loginRequest, registrationRequest } = this.props;
 
@@ -44,44 +48,53 @@ export class AuthPage extends Component {
   };
 
   render() {
+    const { isAuthorized, error } = this.props;
     const { email, password, isRegistration } = this.state;
 
     return <div className="auth">
+      {isAuthorized && <Redirect to="/main" />}
       <Particles className="particles" params={particlesParams} />
       <div className="wrapper">
         <img src={logo} alt="logo" className="logo" />
         <div className="block">
-          <div className="field-wrapper">
-            <img src={iconUser} alt="login" className="field-icon" />
-            <input
-              type="email"
-              className="field"
-              placeholder="login"
-              name="email"
-              value={email}
-              onChange={this.changeHandler}
-            />
-          </div>
-          <div className="field-wrapper">
-            <img src={iconPadlock} alt="password" className="field-icon" />
-            <input
-              type="password"
-              className="field"
-              placeholder="password"
-              name="password"
-              value={password}
-              onChange={this.changeHandler}
-            />
-          </div>
-          <button className="btn" onClick={this.submitHandler}>
-            {isRegistration ? 'Регистрация' : 'Войти'}
-          </button>
+          <form className="form" onSubmit={this.submitHandler}>
+            <div className="field-wrapper">
+              <img src={iconUser} alt="login" className="field-icon" />
+              <input
+                type="email"
+                className="field"
+                placeholder="login"
+                name="email"
+                value={email}
+                onChange={this.changeHandler}
+              />
+            </div>
+            <div className="field-wrapper">
+              <img src={iconPadlock} alt="password" className="field-icon" />
+              <input
+                type="password"
+                className="field"
+                placeholder="password"
+                name="password"
+                value={password}
+                onChange={this.changeHandler}
+              />
+            </div>
+            {error && <div className="error">{error}</div>}
+            <button className="btn">
+              {isRegistration ? 'Регистрация' : 'Войти'}
+            </button>
+          </form>
         </div>
         <div className="block center">
           {
             isRegistration ?
-              <div>Уже зарегистрированы? <a href="" onClick={this.changeMode}>Войти</a></div> :
-              <div>Впервые на сайте? <a href="" onClick={this.changeMode}>Регистрация</a></div>
+              <div className="footer">
+                Уже зарегистрированы? <a href="" onClick={this.changeMode}>Войти</a>
+              </div> :
+              <div className="footer">
+                Впервые на сайте? <a href="" onClick={this.changeMode}>Регистрация</a>
+              </div>
           }
         </div>
       </div>
@@ -89,8 +102,13 @@ export class AuthPage extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isAuthorized: getIsAuthorized(state),
+  error: getError(state)
+});
+
 const mapDispatchToProps = {
   loginRequest, registrationRequest
 };
 
-export default connect(null, mapDispatchToProps)(AuthPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);
