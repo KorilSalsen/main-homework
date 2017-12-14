@@ -10,20 +10,20 @@ describe('AuthPage', () => {
     expect(component.find('.auth')).toHaveLength(1);
     expect(component.find('.particles')).toHaveLength(1);
     expect(component.find('.wrapper')).toHaveLength(1);
-    expect(component.find('.logo')).toHaveLength(1);
+    expect(component.find('.logo-wrapper')).toHaveLength(1);
     expect(component.find('.block')).toHaveLength(2);
     expect(component.find('.form')).toHaveLength(1);
     expect(component.find('.field')).toHaveLength(2);
     expect(component.find('.field-icon')).toHaveLength(2);
     expect(component.find('.field-wrapper')).toHaveLength(2);
-    expect(component.find('.footer')).toHaveLength(1);
+    expect(component.find('.auth-footer')).toHaveLength(1);
     expect(component.find('.btn')).toHaveLength(1);
   });
 
   it('login state is default', () => {
     expect(component.find('.btn').contains('Войти')).toBeTruthy();
-    expect(component.find('.footer').contains(
-      <div className="footer">
+    expect(component.find('.auth-footer').contains(
+      <div className="auth-footer">
         Впервые на сайте? <a href="" onClick={component.instance().changeMode}>Регистрация</a>
       </div>
     )).toBeTruthy();
@@ -33,8 +33,8 @@ describe('AuthPage', () => {
     component.setState({ isRegistration: true });
 
     expect(component.find('.btn').contains('Регистрация')).toBeTruthy();
-    expect(component.find('.footer').contains(
-      <div className="footer">
+    expect(component.find('.auth-footer').contains(
+      <div className="auth-footer">
         Уже зарегистрированы? <a href="" onClick={component.instance().changeMode}>Войти</a>
       </div>
     )).toBeTruthy();

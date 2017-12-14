@@ -16,10 +16,9 @@
     background: #f5f5f6;
   }
 
-  .logo {
-    display: block;
-    width: 244px;
-    margin: 0 auto 34px;
+  .logo-wrapper {
+    display: flex;
+    justify-content: center;
   }
 
   .block {

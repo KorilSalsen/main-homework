@@ -1,0 +1,88 @@
+import { handleActions } from 'redux-actions';
+import { combineReducers } from 'redux';
+
+import {
+  selectBtc,
+  selectEth,
+  fetchBtcRequest,
+  fetchEthRequest,
+  fetchBtcSuccess,
+  fetchBtcFailure,
+  fetchEthFailure,
+  fetchEthSuccess,
+  selectOffset,
+} from '../actions/currency';
+
+const selected = handleActions(
+  {
+    [selectBtc]: () => 'btc',
+    [selectEth]: () => 'eth',
+  },
+  'btc'
+);
+
+const offset = handleActions(
+  {
+    [selectOffset]: (state, action) => action.payload,
+  },
+  '4h'
+);
+
+const isBtcLoading = handleActions(
+  {
+    [fetchBtcRequest]: () => true,
+    [fetchBtcSuccess]: () => false,
+    [fetchBtcFailure]: () => false,
+  },
+  false
+);
+
+const isEthLoading = handleActions(
+  {
+    [fetchEthRequest]: () => true,
+    [fetchEthSuccess]: () => false,
+    [fetchEthFailure]: () => false,
+  },
+  false
+);
+
+const btc = handleActions(
+  {
+    [fetchBtcSuccess]: (state, action) => action.payload,
+  },
+  []
+);
+
+const eth = handleActions(
+  {
+    [fetchEthSuccess]: (state, action) => action.payload,
+  },
+  []
+);
+
+export default combineReducers({
+  selected,
+  offset,
+  isBtcLoading,
+  isEthLoading,
+  btc,
+  eth,
+});
+
+export const getOffset = state => state.currency.offset;
+export const getSelected = state => state.currency.selected;
+
+export const getData = state => {
+  const { currency } = state;
+
+  return currency[currency.selected];
+};
+
+export const getLoading = state => {
+  const { currency: { isBtcLoading, isEthLoading } } = state;
+
+  return isBtcLoading || isEthLoading;
+};
+
+export const getBtcCurrency = state => state.currency.btc[0] ? state.currency.btc[0].sell : '-';
+export const getEthCurrency = state => state.currency.eth[0] ? state.currency.eth[0].sell : '-';

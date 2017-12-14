@@ -5,11 +5,11 @@ import { Redirect } from 'react-router-dom'
 
 import './styles.css';
 import particlesParams from '../../particles-params';
-import logo from '../../assets/Logo.svg';
 import iconUser from '../../assets/login/user-shape.svg';
 import iconPadlock from '../../assets/login/padlock-unlock.svg';
 import { loginRequest, registrationRequest } from '../../actions/auth';
 import { getError, getIsAuthorized } from '../../reducers/auth';
+import Logo from '../Logo';
 
 export class AuthPage extends Component {
   state = {
@@ -55,7 +55,9 @@ export class AuthPage extends Component {
       {isAuthorized && <Redirect to="/main" />}
       <Particles className="particles" params={particlesParams} />
       <div className="wrapper">
-        <img src={logo} alt="logo" className="logo" />
+        <div className="logo-wrapper">
+          <Logo />
+        </div>
         <div className="block">
           <form className="form" onSubmit={this.submitHandler}>
             <div className="field-wrapper">
@@ -89,10 +91,10 @@ export class AuthPage extends Component {
         <div className="block center">
           {
             isRegistration ?
-              <div className="footer">
+              <div className="auth-footer">
                 Уже зарегистрированы? <a href="" onClick={this.changeMode}>Войти</a>
               </div> :
-              <div className="footer">
+              <div className="auth-footer">
                 Впервые на сайте? <a href="" onClick={this.changeMode}>Регистрация</a>
               </div>
           }
