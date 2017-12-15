@@ -2,7 +2,7 @@ import { call, take, select, put } from 'redux-saga/effects';
 
 import {
   loginRequest,
-  loginReject,
+  loginFailure,
   loginSuccess,
   registrationRequest,
   registrationReject,
@@ -192,7 +192,7 @@ describe('auth saga', () => {
     });
 
     it('5. Effect put loginSuccess', () => {
-      expect(saga.throw(error).value).toEqual(put(loginReject(error)));
+      expect(saga.throw(error).value).toEqual(put(loginFailure(error)));
     });
   });
 });

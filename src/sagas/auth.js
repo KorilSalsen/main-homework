@@ -1,11 +1,14 @@
-import { call, take, select, put } from 'redux-saga/effects';
+import { call, take, select, put, takeEvery } from 'redux-saga/effects';
 
 import {
   loginRequest,
-  loginReject,
+  loginFailure,
   loginSuccess,
   registrationRequest,
-  registrationReject,
+  registrationFailure,
+  userRequest,
+  userSuccess,
+  userFailure,
   logout
 } from '../actions/auth';
 import { getIsAuthorized } from '../reducers/auth';
@@ -14,9 +17,9 @@ import {
   setTokenToLocalStorage,
   removeTokenFromLocalStorage
 } from '../localStorage';
-import { login, registration, clearTokenApi, setTokenApi } from '../api';
+import { login, registration, clearTokenApi, setTokenApi, getUserInfo } from '../api';
 
-export default function* () {
+export function* authWatch() {
   while (true) {
     const isAuthorized = yield select(getIsAuthorized);
     const localStorageToken = yield call(getTokenFromLocalStorage);
@@ -25,8 +28,6 @@ export default function* () {
     if (!isAuthorized) {
       if (localStorageToken) {
         token = localStorageToken;
-
-        yield put(loginSuccess(token));
       } else {
         const action = yield take([loginRequest, registrationRequest]);
 
@@ -35,20 +36,16 @@ export default function* () {
           try {
             const response = yield call(registration, action.payload);
             token = response.data.jwt;
-
-            yield put(loginSuccess(token));
           } catch (error) {
-            yield put(registrationReject(error));
+            yield put(registrationFailure(error));
           }
         } else if (action.type === loginRequest.toString()) {
           // Login
           try {
             const response = yield call(login, action.payload);
             token = response.data.jwt;
-
-            yield put(loginSuccess(token));
           } catch (error) {
-            yield put(loginReject(error));
+            yield put(loginFailure(error));
           }
         }
       }
@@ -57,9 +54,24 @@ export default function* () {
     if (token) {
       yield call(setTokenApi, token);
       yield call(setTokenToLocalStorage, token);
+      yield put(userRequest());
+      yield put(loginSuccess(token));
       yield take(logout);
       yield call(removeTokenFromLocalStorage);
       yield call(clearTokenApi);
     }
   }
+}
+
+function* userFlow() {
+  try {
+    const response = yield call(getUserInfo);
+    yield put(userSuccess(response.data.result));
+  } catch (error) {
+    yield put(userFailure(error));
+  }
+}
+
+export function* userWatch() {
+  yield takeEvery(userRequest, userFlow);
 }

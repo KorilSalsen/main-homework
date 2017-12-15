@@ -13,7 +13,9 @@ export default class SwitchButton extends Component {
         onClick={onClick}
       >
         <span className="name">{name}</span>
-        <span className="currency">{currency}</span>
+        <span className="currency">
+          {currency > 0 ? currency.toFixed(2) : '-'}
+        </span>
       </a>
     );
   }

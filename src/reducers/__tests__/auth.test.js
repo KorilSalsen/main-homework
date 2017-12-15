@@ -6,7 +6,7 @@ import {
 } from '../auth';
 import {
   loginRequest,
-  loginReject,
+  loginFailure,
   loginSuccess,
   registrationRequest,
   registrationReject,
@@ -19,7 +19,7 @@ describe('Auth reducer', () => {
 
   it('isFetching', () => {
     expect(isFetching(false, loginRequest())).toBeTruthy();
-    expect(isFetching(false, loginReject())).toBeFalsy();
+    expect(isFetching(false, loginFailure())).toBeFalsy();
     expect(isFetching(false, loginSuccess())).toBeFalsy();
     expect(isFetching(false, registrationRequest())).toBeTruthy();
     expect(isFetching(false, registrationReject())).toBeFalsy();
@@ -28,7 +28,7 @@ describe('Auth reducer', () => {
 
   it('isFetched', () => {
     expect(isFetched(false, loginRequest())).toBeFalsy();
-    expect(isFetched(false, loginReject())).toBeTruthy();
+    expect(isFetched(false, loginFailure())).toBeTruthy();
     expect(isFetched(false, loginSuccess())).toBeTruthy();
     expect(isFetched(false, registrationRequest())).toBeFalsy();
     expect(isFetched(false, registrationReject())).toBeTruthy();
@@ -37,7 +37,7 @@ describe('Auth reducer', () => {
 
   it('token', () => {
     expect(token(null, loginRequest())).toEqual(null);
-    expect(token(null, loginReject())).toEqual(null);
+    expect(token(null, loginFailure())).toEqual(null);
     expect(token(null, loginSuccess(tokenStr))).toEqual(tokenStr);
     expect(token(null, registrationRequest())).toEqual(null);
     expect(token(null, registrationReject())).toEqual(null);
@@ -46,7 +46,7 @@ describe('Auth reducer', () => {
 
   it('error', () => {
     expect(error(null, loginRequest())).toEqual(null);
-    expect(error(null, loginReject(networkError))).toEqual(networkError);
+    expect(error(null, loginFailure(networkError))).toEqual(networkError);
     expect(error(null, loginSuccess())).toEqual(null);
     expect(error(null, registrationRequest())).toEqual(null);
     expect(error(null, registrationReject(networkError))).toEqual(networkError);

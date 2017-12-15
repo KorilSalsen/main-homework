@@ -84,5 +84,18 @@ export const getLoading = state => {
   return isBtcLoading || isEthLoading;
 };
 
-export const getBtcCurrency = state => state.currency.btc[0] ? state.currency.btc[0].sell : '-';
-export const getEthCurrency = state => state.currency.eth[0] ? state.currency.eth[0].sell : '-';
+export const getBtcSell = state => (
+  state.currency.btc[0] ? state.currency.btc[0].sell : 0
+);
+
+export const getBtcBuy = state => (
+  state.currency.btc[0] ? state.currency.btc[0].purchase : 0
+);
+
+export const getEthSell = state => (
+  state.currency.eth[0] ? state.currency.eth[0].sell : 0
+);
+
+export const getEthBuy = state => (
+  state.currency.eth[0] ? state.currency.eth[0].purchase : 0
+);

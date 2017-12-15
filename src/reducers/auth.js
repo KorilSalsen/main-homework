@@ -3,19 +3,22 @@ import { combineReducers } from 'redux'
 
 import {
   loginRequest,
-  loginReject,
+  loginFailure,
   loginSuccess,
   registrationRequest,
-  registrationReject,
+  registrationFailure,
+  userRequest,
+  userSuccess,
+  userFailure,
   logout
 } from '../actions/auth';
 
 export const isFetching = handleActions({
     [loginRequest]: () => true,
     [loginSuccess]: () => false,
-    [loginReject]: () => false,
+    [loginFailure]: () => false,
     [registrationRequest]: () => true,
-    [registrationReject]: () => false,
+    [registrationFailure]: () => false,
     [logout]: () => false,
   },
   false
@@ -24,9 +27,9 @@ export const isFetching = handleActions({
 export const isFetched = handleActions({
     [loginRequest]: () => false,
     [loginSuccess]: () => true,
-    [loginReject]: () => true,
+    [loginFailure]: () => true,
     [registrationRequest]: () => false,
-    [registrationReject]: () => true,
+    [registrationFailure]: () => true,
     [logout]: () => false,
   },
   false
@@ -35,9 +38,27 @@ export const isFetched = handleActions({
 export const token = handleActions({
     [loginRequest]: () => null,
     [loginSuccess]: (state, action) => action.payload,
-    [loginReject]: () => null,
+    [loginFailure]: () => null,
     [registrationRequest]: () => null,
-    [registrationReject]: () => null,
+    [registrationFailure]: () => null,
+    [logout]: () => null,
+  },
+  null
+);
+
+export const userIsFetching = handleActions({
+    [userRequest]: () => true,
+    [userSuccess]: () => false,
+    [userFailure]: () => false,
+    [logout]: () => false,
+  },
+  false
+);
+
+export const user = handleActions({
+    [userRequest]: () => null,
+    [userSuccess]: (state, action) => action.payload,
+    [userFailure]: () => null,
     [logout]: () => null,
   },
   null
@@ -46,9 +67,9 @@ export const token = handleActions({
 export const error = handleActions({
     [loginRequest]: () => null,
     [loginSuccess]: () => null,
-    [loginReject]: (state, action) => action.payload,
+    [loginFailure]: (state, action) => action.payload,
     [registrationRequest]: () => null,
-    [registrationReject]: (state, action) => action.payload,
+    [registrationFailure]: (state, action) => action.payload,
     [logout]: () => null,
   },
   null
@@ -58,10 +79,14 @@ export default combineReducers({
   isFetching,
   isFetched,
   token,
+  userIsFetching,
+  user,
   error
 });
 
 export const getIsAuthorized = state => !!state.auth.token;
+export const getUser = state => state.auth.user;
+
 export const getError = state => {
   const { error } = state.auth;
 

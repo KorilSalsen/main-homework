@@ -5,7 +5,8 @@ import './styles.css';
 import Logo from '../Logo';
 import SwitchButton from '../SwitchButton';
 import { selectEth, selectBtc } from '../../actions/currency';
-import { getSelected, getBtcCurrency, getEthCurrency } from '../../reducers/currency';
+import { getSelected, getBtcSell, getEthSell } from '../../reducers/currency';
+import User from '../User';
 
 export class Header extends Component {
   selectBtc = e => {
@@ -42,7 +43,7 @@ export class Header extends Component {
               onClick={this.selectEth}
             />
           </div>
-          <div className="user">User name</div>
+          <User />
         </div>
       </div>
     );
@@ -51,8 +52,8 @@ export class Header extends Component {
 
 const mapStateToProps = state => ({
   selected: getSelected(state),
-  btcCurrency: getBtcCurrency(state),
-  ethCurrency: getEthCurrency(state)
+  btcCurrency: getBtcSell(state),
+  ethCurrency: getEthSell(state),
 });
 
 const mapDispatchToProps = {

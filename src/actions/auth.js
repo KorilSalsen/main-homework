@@ -3,15 +3,21 @@ import { createActions } from 'redux-actions';
 export const {
   loginRequest,
   loginSuccess,
-  loginReject,
+  loginFailure,
   registrationRequest,
-  registrationReject,
+  registrationFailure,
+  userRequest,
+  userSuccess,
+  userFailure,
   logout
 } = createActions(
   'LOGIN_REQUEST',
   'LOGIN_SUCCESS',
-  'LOGIN_REJECT',
+  'LOGIN_FAILURE',
   'REGISTRATION_REQUEST',
-  'REGISTRATION_REJECT',
+  'REGISTRATION_FAILURE',
+  'USER_REQUEST',
+  'USER_SUCCESS',
+  'USER_FAILURE',
   'LOGOUT'
 );

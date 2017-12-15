@@ -94,17 +94,14 @@ export class Chart extends Component {
             </div>
           </div>
           <div className="chart-block">
-            {
-              isLoading ?
-                <Loader /> :
-                <LineChart
-                  data={this.getData()}
-                  min={this.getMinPrice()}
-                  max={this.getMaxPrice()}
-                  width={750}
-                  height={400}
-                />
-            }
+            <LineChart
+              data={this.getData()}
+              min={this.getMinPrice()}
+              max={this.getMaxPrice()}
+              width={750}
+              height={400}
+            />
+            {isLoading && <Loader />}
           </div>
         </div>
       </div>
