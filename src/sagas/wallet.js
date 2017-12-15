@@ -4,7 +4,7 @@ import { loginSuccess, logout } from '../actions/auth';
 import { walletRequest, walletSuccess, walletFailure } from '../actions/wallet';
 import { getWallet } from '../api';
 
-function* fetchWalletFlow() {
+export function* walletFlow() {
   try {
     const response = yield call(getWallet);
 
@@ -25,6 +25,6 @@ export function* walletWatch() {
       walletTask = undefined;
     }
 
-    if (action.type !== logout.toString()) walletTask = yield fork(fetchWalletFlow);
+    if (action.type !== logout.toString()) walletTask = yield fork(walletFlow);
   }
 }

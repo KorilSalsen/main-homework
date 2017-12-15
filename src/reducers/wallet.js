@@ -7,13 +7,13 @@ import {
   walletFailure
 } from '../actions/wallet';
 
-const isFetching = handleActions({
+export const isFetching = handleActions({
   [walletRequest]: () => true,
   [walletSuccess]: () => false,
   [walletFailure]: () => false,
 }, false);
 
-const isFetched = handleActions({
+export const isFetched = handleActions({
   [walletRequest]: () => false,
   [walletSuccess]: () => true,
   [walletFailure]: () => true,
@@ -21,13 +21,13 @@ const isFetched = handleActions({
 
 const initialData = { usd: 0, btc: 0, eth: 0 };
 
-const data = handleActions({
+export const data = handleActions({
   [walletRequest]: () => initialData,
   [walletSuccess]: (state, action) => action.payload,
   [walletFailure]: () => initialData,
 }, initialData);
 
-const error = handleActions({
+export const error = handleActions({
   [walletRequest]: () => null,
   [walletSuccess]: () => null,
   [walletFailure]: (state, action) => action.payload,

@@ -13,7 +13,7 @@ import {
   selectOffset,
 } from '../actions/currency';
 
-const selected = handleActions(
+export const selected = handleActions(
   {
     [selectBtc]: () => 'btc',
     [selectEth]: () => 'eth',
@@ -21,14 +21,14 @@ const selected = handleActions(
   'btc'
 );
 
-const offset = handleActions(
+export const offset = handleActions(
   {
     [selectOffset]: (state, action) => action.payload,
   },
   '4h'
 );
 
-const isBtcLoading = handleActions(
+export const isBtcLoading = handleActions(
   {
     [fetchBtcRequest]: () => true,
     [fetchBtcSuccess]: () => false,
@@ -37,7 +37,7 @@ const isBtcLoading = handleActions(
   false
 );
 
-const isEthLoading = handleActions(
+export const isEthLoading = handleActions(
   {
     [fetchEthRequest]: () => true,
     [fetchEthSuccess]: () => false,
@@ -46,14 +46,14 @@ const isEthLoading = handleActions(
   false
 );
 
-const btc = handleActions(
+export const btc = handleActions(
   {
     [fetchBtcSuccess]: (state, action) => action.payload,
   },
   []
 );
 
-const eth = handleActions(
+export const eth = handleActions(
   {
     [fetchEthSuccess]: (state, action) => action.payload,
   },

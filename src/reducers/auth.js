@@ -7,9 +7,6 @@ import {
   loginSuccess,
   registrationRequest,
   registrationFailure,
-  userRequest,
-  userSuccess,
-  userFailure,
   logout
 } from '../actions/auth';
 
@@ -46,24 +43,6 @@ export const token = handleActions({
   null
 );
 
-export const userIsFetching = handleActions({
-    [userRequest]: () => true,
-    [userSuccess]: () => false,
-    [userFailure]: () => false,
-    [logout]: () => false,
-  },
-  false
-);
-
-export const user = handleActions({
-    [userRequest]: () => null,
-    [userSuccess]: (state, action) => action.payload,
-    [userFailure]: () => null,
-    [logout]: () => null,
-  },
-  null
-);
-
 export const error = handleActions({
     [loginRequest]: () => null,
     [loginSuccess]: () => null,
@@ -79,13 +58,10 @@ export default combineReducers({
   isFetching,
   isFetched,
   token,
-  userIsFetching,
-  user,
   error
 });
 
 export const getIsAuthorized = state => !!state.auth.token;
-export const getUser = state => state.auth.user;
 
 export const getError = state => {
   const { error } = state.auth;

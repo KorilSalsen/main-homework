@@ -11,7 +11,7 @@ import {
 } from '../actions/market';
 import { walletRequest } from '../actions/wallet';
 
-function* sellFlow(action) {
+export function* sellFlow(action) {
   try {
     const { currency, value } = action.payload;
 
@@ -23,7 +23,7 @@ function* sellFlow(action) {
   }
 }
 
-function* buyFlow(action) {
+export function* buyFlow(action) {
   try {
     const { currency, value } = action.payload;
 

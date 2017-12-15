@@ -6,9 +6,6 @@ export const {
   loginFailure,
   registrationRequest,
   registrationFailure,
-  userRequest,
-  userSuccess,
-  userFailure,
   logout
 } = createActions(
   'LOGIN_REQUEST',
@@ -16,8 +13,5 @@ export const {
   'LOGIN_FAILURE',
   'REGISTRATION_REQUEST',
   'REGISTRATION_FAILURE',
-  'USER_REQUEST',
-  'USER_SUCCESS',
-  'USER_FAILURE',
   'LOGOUT'
 );

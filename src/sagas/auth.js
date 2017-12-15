@@ -1,4 +1,4 @@
-import { call, take, select, put, takeEvery } from 'redux-saga/effects';
+import { call, take, select, put } from 'redux-saga/effects';
 
 import {
   loginRequest,
@@ -6,9 +6,6 @@ import {
   loginSuccess,
   registrationRequest,
   registrationFailure,
-  userRequest,
-  userSuccess,
-  userFailure,
   logout
 } from '../actions/auth';
 import { getIsAuthorized } from '../reducers/auth';
@@ -17,7 +14,7 @@ import {
   setTokenToLocalStorage,
   removeTokenFromLocalStorage
 } from '../localStorage';
-import { login, registration, clearTokenApi, setTokenApi, getUserInfo } from '../api';
+import { login, registration, clearTokenApi, setTokenApi } from '../api';
 
 export function* authWatch() {
   while (true) {
@@ -54,24 +51,10 @@ export function* authWatch() {
     if (token) {
       yield call(setTokenApi, token);
       yield call(setTokenToLocalStorage, token);
-      yield put(userRequest());
       yield put(loginSuccess(token));
       yield take(logout);
       yield call(removeTokenFromLocalStorage);
       yield call(clearTokenApi);
     }
   }
-}
-
-function* userFlow() {
-  try {
-    const response = yield call(getUserInfo);
-    yield put(userSuccess(response.data.result));
-  } catch (error) {
-    yield put(userFailure(error));
-  }
-}
-
-export function* userWatch() {
-  yield takeEvery(userRequest, userFlow);
 }

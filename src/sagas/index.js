@@ -1,6 +1,7 @@
 import { fork } from 'redux-saga/effects';
 
-import { authWatch, userWatch } from './auth';
+import { authWatch } from './auth';
+import { userWatch } from './user';
 import {
   currencyWatch,
   fetchBtcWatch,

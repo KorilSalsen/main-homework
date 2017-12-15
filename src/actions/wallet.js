@@ -7,5 +7,5 @@ export const {
 } = createActions(
   'WALLET_REQUEST',
   'WALLET_SUCCESS',
-  'WALLET_REJECT',
+  'WALLET_FAILURE',
 );

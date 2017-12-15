@@ -10,7 +10,7 @@ import {
   buyFailure,
 } from '../actions/market';
 
-const isFetching = handleActions({
+export const isFetching = handleActions({
   [sellRequest]: () => true,
   [sellSuccess]: () => false,
   [sellFailure]: () => false,
@@ -19,7 +19,7 @@ const isFetching = handleActions({
   [buyFailure]: () => false,
 }, false);
 
-const isFetched = handleActions({
+export const isFetched = handleActions({
   [sellRequest]: () => false,
   [sellSuccess]: () => true,
   [sellFailure]: () => true,
@@ -28,7 +28,7 @@ const isFetched = handleActions({
   [buyFailure]: () => true,
 }, false);
 
-const error = handleActions({
+export const error = handleActions({
   [sellRequest]: () => null,
   [sellSuccess]: () => null,
   [sellFailure]: (state, action) => action.payload,

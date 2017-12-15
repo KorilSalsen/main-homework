@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import './styles.css';
 import { logout } from '../../actions/auth';
-import { getUser } from '../../reducers/auth';
+import { getUser } from '../../reducers/user';
 
 export class User extends Component {
   state = {
@@ -27,7 +27,7 @@ export class User extends Component {
     return (
       <div className="user">
         <div className="handler" onClick={this.dropHandler}>
-          {user ? user.email : 'User'}
+          {user ? user.email : 'Menu'}
         </div>
         <div className={'drop' + (showDrop ? ' show' : '')}>
           <button className="btn" onClick={this.logoutHandler}>

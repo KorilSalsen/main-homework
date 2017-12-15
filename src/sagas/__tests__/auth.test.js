@@ -2,10 +2,10 @@ import { call, take, select, put } from 'redux-saga/effects';
 
 import {
   loginRequest,
-  loginFailure,
   loginSuccess,
+  loginFailure,
   registrationRequest,
-  registrationReject,
+  registrationFailure,
   logout
 } from '../../actions/auth';
 import { getIsAuthorized } from '../../reducers/auth';
@@ -15,10 +15,10 @@ import {
   removeTokenFromLocalStorage
 } from '../../localStorage';
 import { login, registration, clearTokenApi, setTokenApi } from '../../api';
-import authSaga from '../auth';
+import { authWatch } from '../auth';
 
 describe('auth saga', () => {
-  const saga = authSaga();
+  const saga = authWatch();
   const token = 'token';
 
   const userData = {
@@ -51,16 +51,16 @@ describe('auth saga', () => {
       expect(saga.next(registrationRequest(userData)).value).toEqual(call(registration, userData));
     });
 
-    it('5. Effect put loginSuccess', () => {
-      expect(saga.next(response).value).toEqual(put(loginSuccess(token)));
+    it('5. Effect call setTokenApi', () => {
+      expect(saga.next(response).value).toEqual(call(setTokenApi, token));
     });
 
-    it('6. Effect call setTokenApi', () => {
-      expect(saga.next().value).toEqual(call(setTokenApi, token));
-    });
-
-    it('7. Effect call setTokenToLocalStorage', () => {
+    it('6. Effect call setTokenToLocalStorage', () => {
       expect(saga.next().value).toEqual(call(setTokenToLocalStorage, token));
+    });
+
+    it('7. Effect put loginSuccess', () => {
+      expect(saga.next().value).toEqual(put(loginSuccess(token)));
     });
 
     it('8. Effect take logout', () => {
@@ -93,16 +93,16 @@ describe('auth saga', () => {
       expect(saga.next(loginRequest(userData)).value).toEqual(call(login, userData));
     });
 
-    it('5. Effect put loginSuccess', () => {
-      expect(saga.next(response).value).toEqual(put(loginSuccess(token)));
+    it('5. Effect call setTokenApi', () => {
+      expect(saga.next(response).value).toEqual(call(setTokenApi, token));
     });
 
-    it('6. Effect call setTokenApi', () => {
-      expect(saga.next().value).toEqual(call(setTokenApi, token));
-    });
-
-    it('7. Effect call setTokenToLocalStorage', () => {
+    it('6. Effect call setTokenToLocalStorage', () => {
       expect(saga.next().value).toEqual(call(setTokenToLocalStorage, token));
+    });
+
+    it('7. Effect put loginSuccess', () => {
+      expect(saga.next().value).toEqual(put(loginSuccess(token)));
     });
 
     it('8. Effect take logout', () => {
@@ -127,16 +127,16 @@ describe('auth saga', () => {
       expect(saga.next().value).toEqual(call(getTokenFromLocalStorage));
     });
 
-    it('3. Effect put loginSuccess', () => {
-      expect(saga.next(token).value).toEqual(put(loginSuccess(token)));
+    it('3. Effect call setTokenApi', () => {
+      expect(saga.next(token).value).toEqual(call(setTokenApi, token));
     });
 
-    it('4. Effect call setTokenApi', () => {
-      expect(saga.next().value).toEqual(call(setTokenApi, token));
-    });
-
-    it('5. Effect call setTokenToLocalStorage', () => {
+    it('4. Effect call setTokenToLocalStorage', () => {
       expect(saga.next().value).toEqual(call(setTokenToLocalStorage, token));
+    });
+
+    it('5. Effect put loginSuccess', () => {
+      expect(saga.next().value).toEqual(put(loginSuccess(token)));
     });
 
     it('6. Effect take logout', () => {
@@ -170,7 +170,7 @@ describe('auth saga', () => {
     });
 
     it('5. Effect put loginSuccess', () => {
-      expect(saga.throw(error).value).toEqual(put(registrationReject(error)));
+      expect(saga.throw(error).value).toEqual(put(registrationFailure(error)));
     });
   });
 
