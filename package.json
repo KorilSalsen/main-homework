@@ -26,7 +26,7 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start": "concurrently \"yarn watch-css\" \"react-scripts start\"",
-    "build": "react-scripts build",
+    "build": "node-sass-chokidar src/ -o src/ && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
