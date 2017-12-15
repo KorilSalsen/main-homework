@@ -46,8 +46,8 @@ export class Market extends Component {
         break;
       case 'sell':
         this.setState(({ sell }) => {
-          const coin = sell / sellPrice;
-          const buy = coin * buyPrice;
+          const coin = sell / buyPrice;
+          const buy = coin * sellPrice;
           return {
             coin,
             buy,
@@ -56,8 +56,8 @@ export class Market extends Component {
         break;
       case 'buy':
         this.setState(({ buy }) => {
-          const coin = buy / buyPrice;
-          const sell = coin * sellPrice;
+          const coin = buy / sellPrice;
+          const sell = coin * buyPrice;
           return {
             coin,
             sell,
